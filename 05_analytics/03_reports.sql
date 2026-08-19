@@ -24,7 +24,7 @@ SELECT
     customer_segment,
     COUNT(DISTINCT order_id) AS orders_count,
     ROUND(SUM(total_amount), 2) AS total_spent,
-    ROUND(AVG(total_amount), 2) AS avg_check,
+    ROUND(SUM(total_amount) / COUNT(DISTINCT order_id), 2) AS avg_check,
     MIN(order_date)::DATE AS first_purchase,
     MAX(order_date)::DATE AS last_purchase
 FROM analytics.v_sales_details

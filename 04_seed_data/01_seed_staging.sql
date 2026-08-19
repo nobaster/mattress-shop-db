@@ -19,6 +19,7 @@ INSERT INTO stg.customer_info (customer_id, customer_name, customer_phone, custo
 ('C005', 'Сергей Волков',  '+7-900-555-66-77', 'sergey.v@yandex.ru', 'Екатеринбург',    'новый',    '2025-05-01');
 
 
+
 -- Товары
 
 INSERT INTO stg.product_catalog (product_id, product_name, product_category, product_brand, product_attrs, price, supplier_id, supplier_name, valid_from) VALUES
@@ -125,6 +126,16 @@ INSERT INTO stg.sales_transactions (transaction_id, customer_id, customer_name, 
 ('T019', 'C003', 'Дмитрий Козлов', '+7-900-333-44-55', 'dmitry.k@gmail.com', 'Казань',
  'P005', 'Матрас Премиум Пена', 'матрас', 'SleepWell', '{"жесткость": "высокая"}', 60000.00, 2, 10,
  'ORD019', '2026-03-15', 'в обработке', 'S001', 'ООО СонТрейд');
+
+INSERT INTO stg.sales_transactions (transaction_id, customer_id, customer_name, customer_phone, customer_email, customer_city,
+                                     product_id, product_name, product_category, product_brand, product_attrs, price, quantity, discount,
+                                     order_id, order_date, order_status, supplier_id, supplier_name) VALUES
+('T020', 'C005', 'Сергей Волков', '+7-900-555-66-77', 'sergey.v@yandex.ru', 'Екатеринбург',
+ 'P001', 'Матрас Ортопедик Люкс', 'матрас', 'SleepWell', '{"жесткость": "средняя"}', 45000.00, 1, 0,
+ 'ORD020', '2026-03-20', 'выполнен', 'S001', 'ООО СонТрейд'),
+('T021', 'C005', 'Сергей Волков', '+7-900-555-66-77', 'sergey.v@yandex.ru', 'Екатеринбург',
+ 'P004', 'Кровать Лофт', 'кровать', 'SteelHome', '{"материал": "металл"}', 35000.00, 1, 0,
+ 'ORD020', '2026-03-20', 'выполнен', 'S003', 'ООО МебельГрупп');
 
 -- Проверка
 SELECT COUNT(*) AS sales_count FROM stg.sales_transactions;

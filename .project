@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>mattress-shop-db</name>
@@ -11,17 +10,3 @@
 		<nature>org.jkiss.dbeaver.DBeaverNature</nature>
 	</natures>
 </projectDescription>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>mattress-shop-db</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-		<nature>org.jkiss.dbeaver.DBeaverNature</nature>
-	</natures>
-</projectDescription>
->>>>>>> e23f4ef08e9289b86d089ae09f9d9d0f5b1e3ab0

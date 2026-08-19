@@ -96,7 +96,8 @@ JOIN LATERAL (
     WHERE order_hash_key = ho.order_hash_key
     ORDER BY load_date DESC
     LIMIT 1
-) sos ON TRUE;
+) sos ON TRUE
+WHERE sos.order_status = 'выполнен';
 
 --LATERAL — позволяет для каждой строки хаба выбрать последнюю версию из сателлита.
 

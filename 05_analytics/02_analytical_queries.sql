@@ -56,11 +56,11 @@ ORDER BY product_category, revenue DESC;
 
 SELECT
     customer_city,
-    COUNT(*) AS orders_count,
-    ROUND(AVG(total_amount), 2) AS avg_check,
+    COUNT(DISTINCT order_id) AS orders_count,
+    ROUND(SUM(total_amount) / COUNT(DISTINCT order_id), 2) AS avg_check,
     SUM(CASE WHEN customer_segment = 'VIP' THEN 1 ELSE 0 END) AS vip_orders,
     ROUND(
-        SUM(CASE WHEN customer_segment = 'VIP' THEN 1 ELSE 0 END)::NUMERIC / COUNT(*) * 100,
+        SUM(CASE WHEN customer_segment = 'VIP' THEN 1 ELSE 0 END)::NUMERIC / COUNT(DISTINCT order_id) * 100,
         2
     ) AS vip_share_pct
 FROM analytics.v_sales_details
@@ -68,25 +68,34 @@ GROUP BY customer_city
 ORDER BY avg_check DESC;
 
 
-
 --Повторные покупки: интервал между заказами клиента
 WITH customer_orders AS (
-    SELECT DISTINCT
+    SELECT
         customer_id,
         customer_name,
+        order_id,
+        MIN(order_date) AS order_date
+    FROM analytics.v_sales_details
+    GROUP BY customer_id, customer_name, order_id
+),
+ranked_orders AS (
+    SELECT
+        customer_id,
+        customer_name,
+        order_id,
         order_date,
         ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) AS order_number
-    FROM analytics.v_sales_details
+    FROM customer_orders
 )
 SELECT
-    co1.customer_id,
-    co1.customer_name,
-    co1.order_date AS first_order,
-    co2.order_date AS second_order,
-    (co2.order_date - co1.order_date) AS days_between
-FROM customer_orders co1
-JOIN customer_orders co2
-    ON co1.customer_id = co2.customer_id
-    AND co1.order_number = 1
-    AND co2.order_number = 2
+    ro1.customer_id,
+    ro1.customer_name,
+    ro1.order_date AS first_order,
+    ro2.order_date AS second_order,
+    (ro2.order_date - ro1.order_date) AS days_between
+FROM ranked_orders ro1
+JOIN ranked_orders ro2
+    ON ro1.customer_id = ro2.customer_id
+    AND ro1.order_number = 1
+    AND ro2.order_number = 2
 ORDER BY days_between;
