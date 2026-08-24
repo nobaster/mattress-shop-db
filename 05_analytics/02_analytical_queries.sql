@@ -58,11 +58,11 @@ SELECT
     customer_city,
     COUNT(DISTINCT order_id) AS orders_count,
     ROUND(SUM(total_amount) / COUNT(DISTINCT order_id), 2) AS avg_check,
-    SUM(CASE WHEN customer_segment = 'VIP' THEN 1 ELSE 0 END) AS vip_orders,
-    ROUND(
-        SUM(CASE WHEN customer_segment = 'VIP' THEN 1 ELSE 0 END)::NUMERIC / COUNT(DISTINCT order_id) * 100,
-        2
-    ) AS vip_share_pct
+    COUNT(DISTINCT CASE WHEN customer_segment = 'VIP' THEN order_id END) AS vip_orders,
+ROUND(
+    COUNT(DISTINCT CASE WHEN customer_segment = 'VIP' THEN order_id END)::NUMERIC / COUNT(DISTINCT order_id) * 100,
+    2
+) AS vip_share_pct
 FROM analytics.v_sales_details
 GROUP BY customer_city
 ORDER BY avg_check DESC;
